@@ -1,0 +1,42 @@
+-- Function: public.insertar_costos(date, integer, integer, integer)
+
+-- DROP FUNCTION public.insertar_costos(date, integer, integer, integer);
+
+CREATE OR REPLACE FUNCTION public.insertar_costos(
+    date,
+    integer,
+    integer,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    id integer;
+v_fecha_creacion date;
+v_totalcosto int;
+v_id_servicio integer;   
+v_incremento integer;
+   
+Begin
+
+cadena := '';
+separador := '';
+v_fecha_creacion:=$1;
+v_totalcosto:=$2;
+v_id_servicio:=$3;
+v_incremento:=$4;
+       
+    insert into costoservicio (fecha_creacion,totalcosto,id_servicio,incremento) 
+    values (v_fecha_creacion,v_totalcosto,v_id_servicio,v_incremento)
+
+RETURNING id_servicio INTO id;
+
+    return id;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_costos(date, integer, integer, integer)
+  OWNER TO postgres;

@@ -1,0 +1,20 @@
+-- Table: public.costoservicio
+
+-- DROP TABLE public.costoservicio;
+
+CREATE TABLE public.costoservicio
+(
+  id_costoservicio integer NOT NULL DEFAULT nextval('costoservicio_id_costoservicio_seq'::regclass),
+  fecha_creacion date,
+  totalcosto integer,
+  id_servicio integer,
+  iva integer DEFAULT 0,
+  incremento integer DEFAULT 0,
+  status_costoservicio integer DEFAULT 1,
+  CONSTRAINT costoservicio_pkey PRIMARY KEY (id_costoservicio)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.costoservicio
+  OWNER TO postgres;

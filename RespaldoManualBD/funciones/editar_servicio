@@ -1,0 +1,43 @@
+-- Function: public.editar_servicio(integer, text, text, integer)
+
+-- DROP FUNCTION public.editar_servicio(integer, text, text, integer);
+
+CREATE OR REPLACE FUNCTION public.editar_servicio(
+    integer,
+    text,
+    text,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+p_id_servicio int;
+nombre_servicioS text;
+contenido_servicioS text;
+p_id_plan integer;
+   
+Begin
+
+cadena := '';
+separador := '';
+p_id_servicio:=$1;
+nombre_servicioS:=$2;
+contenido_servicioS:=$3;
+p_id_plan:=$4;
+
+      	update servicios set nombre_servicio = nombre_servicioS,
+			      contenido_servicio = contenido_servicioS,
+			      id_plan = p_id_plan
+			              
+	where id_servicio = p_id_servicio;
+	
+    return p_id_servicio;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.editar_servicio(integer, text, text, integer)
+  OWNER TO postgres;

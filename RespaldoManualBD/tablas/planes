@@ -1,0 +1,16 @@
+-- Table: public.planes
+
+-- DROP TABLE public.planes;
+
+CREATE TABLE public.planes
+(
+  id_plan integer NOT NULL DEFAULT nextval('planes_id_plan_seq'::regclass),
+  descripcion text DEFAULT ''::text,
+  status integer DEFAULT 1,
+  CONSTRAINT planes_pkey PRIMARY KEY (id_plan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.planes
+  OWNER TO postgres;

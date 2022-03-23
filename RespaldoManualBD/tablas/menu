@@ -1,0 +1,20 @@
+-- Table: public.menu
+
+-- DROP TABLE public.menu;
+
+CREATE TABLE public.menu
+(
+  id_menu integer NOT NULL DEFAULT nextval('menu_id_menu_seq'::regclass),
+  nivel integer,
+  id_menu_padre integer,
+  descripcion character varying,
+  url character varying,
+  acceso integer[],
+  orden integer,
+  CONSTRAINT menu_pkey PRIMARY KEY (id_menu)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.menu
+  OWNER TO postgres;

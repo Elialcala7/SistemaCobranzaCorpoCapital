@@ -1,0 +1,33 @@
+/*
+
+ORDEN:
+
+1 - 1 - 0 - Inicio - ../../paginas/CU_bienvenida - {1,2,3} - 1
+
+2 - 1 - 0 - Configuración - # - {1} - 2
+
+3 - 2 - 2 - Usuario       - ../../paginas/CU_usuario/index.php - {1,2,3} - 3
+
+4 - 1 - 0 - Tarifas - # - {1} - 4
+
+5 - 2 - 4 - Equipos - ../../paginas/CU_servTecnico/equipos.php - {1,4} - 5 ===> SIN DESARROLLAR <===
+
+6 - 2 - 4 - Materiales - ../../paginas/CU_servTecnico/index.php - {1} - 6 ===> SIN DESARROLLAR <===
+
+7 - 2 - 4 - Planes - ../../paginas/CU_planes/index.php - {1} - 7
+
+8 - 2 - 4 - Servicios - ../../paginas/CU_servicios/index.php - {1} - 8
+
+9 - 2 - 4 - Costos Instalación - ../../paginas/CU_servTecnico/costosInst.php - {1,2,3} - 9
+
+10 - 1 - 0 - Informe Técnico - ../../paginas/CU_servTecnico/informetecnico.php - {1,2,3} - 10 ===> SIN DESARROLLAR <===
+
+11 - 1 - 0 - Contratos - ../../paginas/CU_clientes/index.php - {1,2,3} - 11
+
+12 - 1 - 0 - Control Pagos - ../../paginas/CU_pagos/index.php - {1,2,3} - 12
+
+13 - 1 - 0 - Consultar - ../../paginas/CU_consultas/index.php - {1,2,3} - 13
+
+14 - 1 - 0 - Reportes -  ../../paginas/CU_reportes/index.php - {1,2,3} - 14
+
+15 - 1 - 0 - Cerrar -  ../../paginas/CU_inicio/cerrarSesion.php - {1,2,3,4} -15

@@ -1,0 +1,37 @@
+-- Function: public.actualizar_fpcobro(date, text, integer)
+
+-- DROP FUNCTION public.actualizar_fpcobro(date, text, integer);
+
+CREATE OR REPLACE FUNCTION public.actualizar_fpcobro(
+    date,
+    text,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE    
+    fila RECORD;
+    cadena text;
+    separador text;
+
+    f_fecha_cobro date;
+    f_estatus_factura text;
+    f_id_cliente integer;
+
+    
+Begin    
+    cadena := '';
+    separador := '';
+    f_fecha_cobro := $1;
+    f_estatus_factura := $2;
+    f_id_cliente :=$3;
+    
+    update pfcobro set estatus_factura = f_estatus_factura
+                   where id_cliente = f_id_cliente and
+                         fecha_cobro = f_fecha_cobro;
+return 0;
+end;		
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.actualizar_fpcobro(date, text, integer)
+  OWNER TO postgres;

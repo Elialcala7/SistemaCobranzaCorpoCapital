@@ -1,0 +1,22 @@
+-- Table: public.niveles
+
+-- DROP TABLE public.niveles;
+
+CREATE TABLE public.niveles
+(
+  id_nivel integer NOT NULL DEFAULT nextval('niveles_id_nivel_seq'::regclass),
+  descripcion_nivel character varying,
+  permisos integer[],
+  CONSTRAINT niveles_pkey PRIMARY KEY (id_nivel)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.niveles
+  OWNER TO postgres;
+
+-----------------CONTENIDO NIVELES---------------
+1 - MASTER - {1,2,3}
+2 - ANALISTA - {2}
+3 - DIRECTOR - {1,2,3}
+4 - COORDINADOR - {1,3}

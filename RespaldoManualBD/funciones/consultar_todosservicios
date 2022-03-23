@@ -1,0 +1,39 @@
+-- Function: public.consultar_todosservicios()
+
+-- DROP FUNCTION public.consultar_todosservicios();
+
+CREATE OR REPLACE FUNCTION public.consultar_todosservicios()
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+Begin
+    cadena := '';
+    separador:='';
+   
+    for fila in 
+	select id_servicio || '~' ||  
+	       nombre_servicio || '~' ||
+	       contenido_servicio || '~' ||
+	       monto_servicio || '~' ||
+               id_plan || '~' ||
+	       status_servicio  as datosServicio
+	       
+	from   servicios 
+	where  status_servicio = 1
+		
+    loop
+        cadena := cadena||separador||fila.datosServicio;
+        separador:='|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_todosservicios()
+  OWNER TO postgres;

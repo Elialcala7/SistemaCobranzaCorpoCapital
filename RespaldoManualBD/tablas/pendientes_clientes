@@ -1,0 +1,24 @@
+-- Table: public.pendientes_clientes
+
+-- DROP TABLE public.pendientes_clientes;
+
+CREATE TABLE public.pendientes_clientes
+(
+  id_pend_clientes integer NOT NULL DEFAULT nextval('pendientes_clientes_id_pend_clientes_seq'::regclass),
+  nombres_pendcliente character varying DEFAULT ''::character varying,
+  condi_pcliente integer,
+  ci_clientepend text,
+  telefono_1 text,
+  telefono_2 text,
+  correo_1 character varying DEFAULT ''::character varying,
+  correo_2 character varying DEFAULT ''::character varying,
+  nombre_comercio character varying DEFAULT ''::character varying,
+  statuscontrato_pend character varying,
+  fecha_registro date,
+  usuario text
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.pendientes_clientes
+  OWNER TO postgres;

@@ -1,0 +1,32 @@
+-- Function: public.eliminar_plan(integer)
+
+-- DROP FUNCTION public.eliminar_plan(integer);
+
+CREATE OR REPLACE FUNCTION public.eliminar_plan(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+    p_id_plan integer;
+        
+    
+Begin
+    cadena := '';
+    separador := '';
+    p_id_plan:=$1;
+            
+   	update planes set            
+			                id_plan = p_id_plan,
+					status = 0
+
+					where id_plan = p_id_plan;
+    return p_id_plan;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.eliminar_plan(integer)
+  OWNER TO postgres;

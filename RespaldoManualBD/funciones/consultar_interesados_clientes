@@ -1,0 +1,58 @@
+-- Function: public.consultar_interesados_clientes(date, date, character varying)
+
+-- DROP FUNCTION public.consultar_interesados_clientes(date, date, character varying);
+
+CREATE OR REPLACE FUNCTION public.consultar_interesados_clientes(
+    date,
+    date,
+    character varying)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;  
+    separador text;
+    rang_fecha_inicio date;
+    rang_fecha_fin date;
+    interesados character varying;
+   
+Begin
+    cadena := ''; 
+    separador:='';  
+    rang_fecha_inicio:= $1;
+    rang_fecha_fin:= $2;
+    interesados:=$3;
+   
+    for fila in 
+	select 	cli.id_cliente  ||'~'||
+		cli.nombre_comercio ||'~'||
+		cli.nombres_cliente ||'~'||
+		cli.telefono_principal ||'~'||
+		cli.ci_cliente ||'~'||
+		ser.nombre_servicio ||'~'||
+		cli.costoservicio ||'~'||
+		cli.fecha_registr ||'~'||
+		cli.correo ||'~'||
+		tpc.nombre_tipo as datos
+	from 
+		clientes cli,
+		servicios ser,
+		tipocliente tpc
+	where 
+		cli.fecha_registr between rang_fecha_inicio and  rang_fecha_fin and
+		cli.estatus_contrato=interesados and
+		cli.idservicio = ser.id_servicio and
+		cli.tipo_cliente = tpc.id_tipocliente
+	    
+    loop
+        cadena := cadena||separador||fila.datos;
+        separador:='|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_interesados_clientes(date, date, character varying)
+  OWNER TO postgres;

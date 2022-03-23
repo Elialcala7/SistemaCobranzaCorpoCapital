@@ -1,0 +1,19 @@
+-- Table: public.seguridad
+
+-- DROP TABLE public.seguridad;
+
+CREATE TABLE public.seguridad
+(
+  id_seguridad integer NOT NULL DEFAULT nextval('seguridad_id_seguridad_seq'::regclass),
+  fecha_registro date,
+  usuario integer,
+  ip text,
+  desc_movimiento character varying DEFAULT ''::character varying,
+  idregostro_movimiento integer,
+  CONSTRAINT seguridad_pkey PRIMARY KEY (id_seguridad)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.seguridad
+  OWNER TO postgres;

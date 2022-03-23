@@ -1,0 +1,28 @@
+-- Function: public.consultar_nivel_especifico(integer)
+
+-- DROP FUNCTION public.consultar_nivel_especifico(integer);
+
+CREATE OR REPLACE FUNCTION public.consultar_nivel_especifico(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    p_id_nivel int;
+Begin
+    cadena := '';
+    p_id_nivel := $1;
+    for fila in 
+	select descripcion_nivel || '~' ||  id_nivel as datosPersonales 
+	from niveles where id_nivel=p_id_nivel
+    loop
+        cadena := fila.datosPersonales;
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_nivel_especifico(integer)
+  OWNER TO postgres;

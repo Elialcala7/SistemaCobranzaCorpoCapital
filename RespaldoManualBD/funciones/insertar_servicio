@@ -1,0 +1,42 @@
+-- Function: public.insertar_servicio(text, text, integer, integer)
+
+-- DROP FUNCTION public.insertar_servicio(text, text, integer, integer);
+
+CREATE OR REPLACE FUNCTION public.insertar_servicio(
+    text,
+    text,
+    integer,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    id integer;
+v_nombre_servicio text;
+v_contenido_servicio text;
+v_monto_servicio integer;
+v_id_plan integer;    
+   
+Begin
+
+cadena := '';
+separador := '';
+v_nombre_servicio:=$1;
+v_contenido_servicio:=$2;
+v_monto_servicio:=$3;
+v_id_plan:=$4;    
+       
+   	insert into servicios (nombre_servicio,contenido_servicio,monto_servicio,id_plan) 
+   	values (v_nombre_servicio,v_contenido_servicio,v_monto_servicio,v_id_plan)
+
+RETURNING id_servicio INTO id;
+
+    return id;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_servicio(text, text, integer, integer)
+  OWNER TO postgres;

@@ -1,0 +1,51 @@
+-- Function: public.insertar_usuarios(text, character varying, integer, character varying, character varying, character varying)
+
+-- DROP FUNCTION public.insertar_usuarios(text, character varying, integer, character varying, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION public.insertar_usuarios(
+    text,
+    character varying,
+    integer,
+    character varying,
+    character varying,
+    character varying)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+     id integer;
+    
+p_cedula text;
+p_clave character varying;
+p_id_nivel integer;
+p_nombre character varying;
+p_apellido character varying;
+p_correo character varying;
+    
+   
+Begin
+
+cadena := '';
+separador := '';
+
+p_cedula:=$1;
+p_clave:=$2;
+p_id_nivel:=$3;
+p_nombre:=$4;
+p_apellido:=$5;
+p_correo:=$6; 
+       
+    insert into usuarios (cedula,clave,id_nivel,nombre,apellido,correo_usuario) 
+    values (p_cedula,p_clave,p_id_nivel,p_nombre,p_apellido,p_correo)
+
+RETURNING id_usuario INTO id;
+
+    return id;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_usuarios(text, character varying, integer, character varying, character varying, character varying)
+  OWNER TO postgres;

@@ -1,0 +1,32 @@
+-- Function: public.eliminar_usuarios(integer)
+
+-- DROP FUNCTION public.eliminar_usuarios(integer);
+
+CREATE OR REPLACE FUNCTION public.eliminar_usuarios(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+    p_id_usuario integer;
+        
+    
+Begin
+    cadena := '';
+    separador := '';
+    p_id_usuario:=$1;
+            
+   	update usuarios set            
+			                id_usuario = p_id_usuario,
+					eliminar_usuario = 1
+
+					where id_usuario = p_id_usuario;
+    return p_id_usuario;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.eliminar_usuarios(integer)
+  OWNER TO postgres;

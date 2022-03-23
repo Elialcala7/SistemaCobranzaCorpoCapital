@@ -1,0 +1,61 @@
+-- Function: public.insertar_control_pago(integer, integer, date, text, character varying, integer, integer, integer, text, character varying)
+
+-- DROP FUNCTION public.insertar_control_pago(integer, integer, date, text, character varying, integer, integer, integer, text, character varying);
+
+CREATE OR REPLACE FUNCTION public.insertar_control_pago(
+    integer,
+    integer,
+    date,
+    text,
+    character varying,
+    integer,
+    integer,
+    integer,
+    text,
+    character varying)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    id integer;
+  c_id_cliente integer;
+  c_id_forma_pago integer;
+  c_fecha_pago date;
+  c_hora_pago text;
+  c_factura_no character varying;
+  c_monto_total integer;
+  c_monto_pagado integer;
+  c_diferencia_monto integer;
+  c_usuario text;
+  c_detalle_pago character varying;
+   
+Begin
+
+cadena := '';
+separador := '';
+  
+  c_id_cliente:=$1;
+  c_id_forma_pago:=$2;
+  c_fecha_pago:=$3;
+  c_hora_pago:=$4;
+  c_factura_no:=$5;
+  c_monto_total:=$6;
+  c_monto_pagado:=$7;
+  c_diferencia_monto:=$8;
+  c_usuario:=$9;
+  c_detalle_pago:=$10;
+       
+   	insert into control_pagos (id_cliente,id_forma_pago,fecha_pago,hora_pago,factura_no,monto_total,monto_pagado,diferencia_monto,usuario,detalle_pago) 
+   	values (c_id_cliente,c_id_forma_pago,c_fecha_pago,c_hora_pago,c_factura_no,c_monto_total,c_monto_pagado,c_diferencia_monto,c_usuario,c_detalle_pago)
+
+RETURNING id_control_pago  INTO id;
+
+    return id;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_control_pago(integer, integer, date, text, character varying, integer, integer, integer, text, character varying)
+  OWNER TO postgres;

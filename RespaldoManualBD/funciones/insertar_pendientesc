@@ -1,0 +1,63 @@
+-- Function: public.insertar_pendientesc(character varying, integer, text, text, text, character varying, character varying, character varying, character varying, date, text)
+
+-- DROP FUNCTION public.insertar_pendientesc(character varying, integer, text, text, text, character varying, character varying, character varying, character varying, date, text);
+
+CREATE OR REPLACE FUNCTION public.insertar_pendientesc(
+    character varying,
+    integer,
+    text,
+    text,
+    text,
+    character varying,
+    character varying,
+    character varying,
+    character varying,
+    date,
+    text)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    id integer;
+  pcli_nombres_pendcliente character varying;
+  pcli_condi_pcliente integer;
+  pcli_ci_clientepend text;
+  pcli_telefono_1 text;
+  pcli_telefono_2 text;
+  pcli_correo_1 character varying;
+  pcli_correo_2 character varying;
+  pcli_nombre_comercio character varying;
+  pcli_statuscontrato_pend character varying;
+  pcli_fecha_registro date;
+  pcli_usuario text;
+   
+Begin
+
+cadena := '';
+separador := '';
+  pcli_nombres_pendcliente:=$1;
+  pcli_condi_pcliente:=$2;
+  pcli_ci_clientepend:=$3;
+  pcli_telefono_1:=$4;
+  pcli_telefono_2:=$5;
+  pcli_correo_1:=$6;
+  pcli_correo_2:=$7;
+  pcli_nombre_comercio:=$8;
+  pcli_statuscontrato_pend:=$9;
+  pcli_fecha_registro:=$10;
+  pcli_usuario:=$11;
+       
+   	insert into pendientes_clientes (nombres_pendcliente,condi_pcliente,ci_clientepend,telefono_1,telefono_2,correo_1,correo_2,nombre_comercio,statuscontrato_pend,fecha_registro,usuario) 
+   	values (pcli_nombres_pendcliente,condi_pcliente,ci_clientepend,telefono_1,telefono_2,correo_1,correo_2,nombre_comercio,statuscontrato_pend,fecha_registro,usuario)
+
+RETURNING id_pend_clientes INTO id;
+
+    return id;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_pendientesc(character varying, integer, text, text, text, character varying, character varying, character varying, character varying, date, text)
+  OWNER TO postgres;

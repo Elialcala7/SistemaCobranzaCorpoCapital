@@ -1,0 +1,28 @@
+--Function: public.consultar_plan_especifico(integer)
+
+-- DROP FUNCTION public.consultar_plan_especifico(integer);
+
+CREATE OR REPLACE FUNCTION public.consultar_plan_especifico(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    p_id_plan int;
+Begin
+    cadena := '';
+    p_id_plan := $1;
+    for fila in 
+	select descripcion || '~' ||  id_plan as datosPersonales 
+	from planes where id_plan=p_id_plan
+    loop
+        cadena := fila.datosPersonales;
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_plan_especifico(integer)
+  OWNER TO postgres;

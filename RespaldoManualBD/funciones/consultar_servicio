@@ -1,0 +1,46 @@
+-- Function: public.consultar_servicio(integer)
+
+-- DROP FUNCTION public.consultar_servicio(integer);
+
+CREATE OR REPLACE FUNCTION public.consultar_servicio(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;  
+    p_id_servicio int;
+   
+Begin
+    cadena := '';   
+    p_id_servicio := $1;
+   
+    for fila in 
+	select 	sv.id_servicio ||'~'||
+		sv.nombre_servicio ||'~'||
+		sv.contenido_servicio ||'~'||
+		sv.monto_servicio ||'~'||
+		cs.fecha_creacion ||'~'||
+		cs.incremento ||'~'||
+		pl.descripcion as datos
+	from 
+		servicios sv,
+		planes pl,
+		costoservicio cs
+	where 
+		sv.id_servicio=p_id_servicio and
+		sv.status_servicio=1 and
+		sv.id_plan=pl.id_plan and
+		sv.id_servicio=cs.id_servicio
+		
+	    
+    loop
+        cadena := fila.datos;
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_servicio(integer)
+  OWNER TO postgres;

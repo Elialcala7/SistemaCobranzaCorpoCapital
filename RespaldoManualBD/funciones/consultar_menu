@@ -1,0 +1,29 @@
+-- Function: public.consultar_menu()
+
+-- DROP FUNCTION public.consultar_menu();
+
+CREATE OR REPLACE FUNCTION public.consultar_menu()
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+
+Begin
+    cadena := '';
+    separador:='';
+    for fila in 
+	select id_menu||'~'||nivel||'~'||id_menu_padre||'~'||descripcion||'~'||url||'~'||text(acceso) as menu from menu order by orden
+    loop
+        cadena := cadena ||separador||fila.menu;
+        separador := '|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_menu()
+  OWNER TO postgres;

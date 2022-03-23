@@ -1,0 +1,37 @@
+-- Function: public.consultar_fpcobro(integer)
+
+-- DROP FUNCTION public.consultar_fpcobro(integer);
+
+CREATE OR REPLACE FUNCTION public.consultar_fpcobro(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+     separador text;
+    l_id_cliente int;
+Begin
+    cadena := '';
+     separador:='';
+    l_id_cliente := $1;
+    for fila in 
+  select id_cliente || '~' ||  
+         id_servicio || '~' ||
+         costo_servicio || '~' ||
+         fecha_cobro || '~' ||
+         estatus_factura || '~' ||
+         id_pfcobro as datos
+  from pfcobro 
+  where id_cliente=l_id_cliente and estatus_factura='PENDIENTE'
+    loop
+        cadena := cadena||separador||fila.datos;
+         separador:='|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_fpcobro(integer)
+  OWNER TO postgres;

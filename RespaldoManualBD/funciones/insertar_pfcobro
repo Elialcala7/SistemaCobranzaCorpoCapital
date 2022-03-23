@@ -1,0 +1,42 @@
+-- Function: public.insertar_pfcobro(integer, integer, integer, date)
+
+-- DROP FUNCTION public.insertar_pfcobro(integer, integer, integer, date);
+
+CREATE OR REPLACE FUNCTION public.insertar_pfcobro(
+    integer,
+    integer,
+    integer,
+    date)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    id integer;
+l_id_cliente integer;
+l_id_servicio integer;   
+l_costo_servicio integer;
+l_fecha_cobro date;
+   
+Begin
+
+cadena := '';
+separador := '';
+l_id_cliente:=$1;
+l_id_servicio:=$2;   
+l_costo_servicio:=$3;
+l_fecha_cobro:=$4;
+       
+   	insert into pfcobro (id_cliente,id_servicio,costo_servicio,fecha_cobro) 
+   	values (l_id_cliente,l_id_servicio,l_costo_servicio,l_fecha_cobro)
+
+RETURNING id_pfcobro INTO id;
+
+    return id;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_pfcobro(integer, integer, integer, date)
+  OWNER TO postgres;

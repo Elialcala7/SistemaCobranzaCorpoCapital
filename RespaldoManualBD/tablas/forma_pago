@@ -1,0 +1,23 @@
+-- Table: public.forma_pago
+
+-- DROP TABLE public.forma_pago;
+
+CREATE TABLE public.forma_pago
+(
+  id_formapago integer NOT NULL DEFAULT nextval('forma_pago_id_formapago_seq'::regclass),
+  nombre_pago character varying,
+  CONSTRAINT forma_pago_pkey PRIMARY KEY (id_formapago)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.forma_pago
+  OWNER TO postgres;
+
+  --------------------------------------TIPOS DE FORMAS---------------------------------------------
+1 - EFECTIVO
+2 - TDD MAESTRO
+3 - TDC VISA
+4 - TDC MASTER
+4 - DIVISAS
+5 - OTROS

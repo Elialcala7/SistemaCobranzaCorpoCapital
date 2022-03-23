@@ -1,0 +1,65 @@
+-- Function: public.consultar_pago(integer)
+
+-- DROP FUNCTION public.consultar_pago(integer);
+
+CREATE OR REPLACE FUNCTION public.consultar_pago(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;  
+    c_id_control_pago int;
+   
+Begin
+    cadena := '';   
+    c_id_control_pago := $1;
+   
+    for fila in 
+	select 	cp.id_cliente ||'~'||
+		cp.id_control_pago ||'~'||
+		cl.nombres_cliente ||'~'||
+		cl.ci_cliente ||'~'||
+		cl.telefono_principal ||'~'||
+		cl.telefono_alterno ||'~'||
+		cl.correo ||'~'||
+		cl.direccion ||'~'||
+		cp.fecha_pago ||'~'||
+		cp.hora_pago ||'~'||
+		cp.factura_no ||'~'||
+		cp.monto_pagado ||'~'||
+		cp.diferencia_monto ||'~'||
+		cp.detalle_pago ||'~'||
+		sc.nombre_servicio ||'~'||
+		sc.contenido_servicio ||'~'||
+		cl.costos_instalacion ||'~'||
+		us.nombre ||'~'||
+		us.apellido ||'~'||
+		fp.nombre_pago ||'~'||
+		cl.nombre_comercio ||'~'||
+		cl.otro_correo ||'~'||
+		cl.costoservicio as datos
+	from 
+		control_pagos cp,
+		clientes cl,
+		servicios sc,
+		usuarios us,
+		forma_pago fp
+	where 
+		cp.id_control_pago=c_id_control_pago and 
+		cp.id_cliente=cl.id_cliente and
+		cl.idservicio=sc.id_servicio and
+		cp.usuario=us.cedula and
+		cp.id_forma_pago=fp.id_formapago
+		
+	    
+    loop
+        cadena := fila.datos;
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_pago(integer)
+  OWNER TO postgres;

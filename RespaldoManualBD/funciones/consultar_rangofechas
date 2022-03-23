@@ -1,0 +1,54 @@
+-- Function: public.consultar_rangofechas(date, date)
+
+-- DROP FUNCTION public.consultar_rangofechas(date, date);
+
+CREATE OR REPLACE FUNCTION public.consultar_rangofechas(
+    date,
+    date)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;  
+    separador text;
+    rang_fecha_inicio date;
+    rang_fecha_fin date;
+   
+Begin
+    cadena := ''; 
+    separador:='';  
+    rang_fecha_inicio:= $1;
+    rang_fecha_fin:= $2;
+   
+    for fila in 
+	select 	pfc.id_pfcobro  ||'~'||
+		pfc.id_cliente ||'~'||
+		cli.nombres_cliente ||'~'||
+		cli.telefono_principal ||'~'||
+		pfc.id_servicio ||'~'||
+		ser.nombre_servicio ||'~'||
+		pfc.costo_servicio ||'~'||
+		pfc.fecha_cobro as datos
+	from 
+		pfcobro pfc,
+		clientes cli,
+		servicios ser
+	where 
+		pfc.fecha_cobro between rang_fecha_inicio and  rang_fecha_fin and
+		estatus_factura='PENDIENTE' and
+		pfc.id_cliente = cli.id_cliente and
+		pfc.id_servicio = ser.id_servicio
+		
+	    
+    loop
+        cadena := cadena||separador||fila.datos;
+        separador:='|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_rangofechas(date, date)
+  OWNER TO postgres;

@@ -1,0 +1,32 @@
+-- Function: public.actualizarservicio(integer, integer)
+
+-- DROP FUNCTION public.actualizarservicio(integer, integer);
+
+CREATE OR REPLACE FUNCTION public.actualizarservicio(
+    integer,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE    
+    fila RECORD;
+    cadena text;
+    separador text;
+
+    v_idservicio integer;
+    v_monto_servicio integer;
+
+    
+Begin    
+    cadena := '';
+    separador := '';
+    v_idservicio := $1;
+    v_monto_servicio := $2;
+    
+    update servicios set monto_servicio = v_monto_servicio where id_servicio = v_idservicio;
+return 0;
+end;    
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.actualizarservicio(integer, integer)
+  OWNER TO postgres;

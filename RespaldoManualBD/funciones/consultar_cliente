@@ -1,0 +1,60 @@
+-- Function: public.consultar_cliente(integer)
+
+-- DROP FUNCTION public.consultar_cliente(integer);
+
+CREATE OR REPLACE FUNCTION public.consultar_cliente(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;  
+    cl_id_cliente int;
+   
+Begin
+    cadena := '';   
+    cl_id_cliente := $1;
+   
+    for fila in 
+	select 	cs.id_cliente ||'~'||
+		cs.condicion_cliente ||'~'||
+		cs.nombres_cliente ||'~'||
+		cs.ci_cliente ||'~'||
+		cs.telefono_principal ||'~'||
+		cs.telefono_alterno ||'~'||
+		cs.correo ||'~'||
+		cs.direccion ||'~'||
+		sc.nombre_servicio ||'~'||
+		sc.contenido_servicio ||'~'||
+		cs.costos_instalacion ||'~'||
+		cs.observacion_instalacion ||'~'||
+		cs.estatus_contrato ||'~'||
+		cs.fecha_registr ||'~'||
+		us.nombre ||'~'||
+		us.apellido ||'~'||
+		tp.nombre_tipo ||'~'||
+		cs.nombre_comercio ||'~'||
+		cs.otro_correo ||'~'||
+		cs.costoservicio as datos
+	from 
+		clientes cs,
+		servicios sc,
+		usuarios us,
+		tipocliente tp
+	where 
+		cs.id_cliente=cl_id_cliente and 
+		cs.idservicio=sc.id_servicio and
+		cs.usuario=us.cedula and
+		cs.tipo_cliente=tp.id_tipocliente
+		
+	    
+    loop
+        cadena := fila.datos;
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_cliente(integer)
+  OWNER TO postgres;

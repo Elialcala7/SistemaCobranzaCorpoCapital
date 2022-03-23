@@ -1,0 +1,21 @@
+-- Table: public.usuarios
+
+-- DROP TABLE public.usuarios;
+
+CREATE TABLE public.usuarios
+(
+  id_usuario integer NOT NULL DEFAULT nextval('usuarios_id_usuario_seq'::regclass),
+  cedula text,
+  clave character varying,
+  id_nivel integer,
+  eliminar_usuario integer DEFAULT 0,
+  nombre character varying,
+  apellido character varying DEFAULT ''::character varying,
+  correo_usuario character varying DEFAULT ''::character varying,
+  CONSTRAINT usuarios_pkey PRIMARY KEY (id_usuario)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.usuarios
+  OWNER TO postgres;

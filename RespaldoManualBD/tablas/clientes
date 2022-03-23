@@ -1,0 +1,31 @@
+-- Table: public.clientes
+
+-- DROP TABLE public.clientes;
+
+CREATE TABLE public.clientes
+(
+  id_cliente integer NOT NULL DEFAULT nextval('clientes_id_cliente_seq'::regclass),
+  condicion_cliente integer,
+  nombres_cliente character varying,
+  ci_cliente text,
+  telefono_principal text,
+  telefono_alterno text DEFAULT ''::text,
+  correo character varying DEFAULT ''::character varying,
+  direccion character varying,
+  idservicio integer,
+  costos_instalacion integer,
+  observacion_instalacion character varying DEFAULT ''::character varying,
+  estatus_contrato character varying,
+  fecha_registr date,
+  tipo_cliente integer,
+  usuario text,
+  nombre_comercio character varying DEFAULT ''::character varying,
+  otro_correo character varying DEFAULT ''::character varying,
+  costoservicio integer,
+  CONSTRAINT clientes_pkey PRIMARY KEY (id_cliente)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.clientes
+  OWNER TO postgres;

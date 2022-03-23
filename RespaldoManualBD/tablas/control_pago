@@ -1,0 +1,24 @@
+-- Table: public.control_pagos
+
+-- DROP TABLE public.control_pagos;
+
+CREATE TABLE public.control_pagos
+(
+  id_control_pago integer NOT NULL DEFAULT nextval('control_pagos_id_control_pago_seq'::regclass),
+  id_cliente integer,
+  id_forma_pago integer,
+  fecha_pago date,
+  hora_pago text,
+  factura_no character varying,
+  monto_total integer DEFAULT 0,
+  monto_pagado integer DEFAULT 0,
+  diferencia_monto integer DEFAULT 0,
+  usuario text,
+  detalle_pago character varying DEFAULT ''::character varying,
+  CONSTRAINT control_pagos_pkey PRIMARY KEY (id_control_pago)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.control_pagos
+  OWNER TO postgres;

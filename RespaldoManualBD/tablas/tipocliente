@@ -1,0 +1,20 @@
+-- Table: public.tipocliente
+
+-- DROP TABLE public.tipocliente;
+
+CREATE TABLE public.tipocliente
+(
+  id_tipocliente integer NOT NULL DEFAULT nextval('tipocliente_id_tipocliente_seq'::regclass),
+  nombre_tipo character varying,
+  CONSTRAINT tipocliente_pkey PRIMARY KEY (id_tipocliente)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.tipocliente
+  OWNER TO postgres;
+--------------------------------------TIPOS DE CLIENTES ---------------------------------------------
+1 - RESIDENCIAL
+2 - COMERCIAL
+3 - EMPRESARIAL
+4 - CONVENIOS

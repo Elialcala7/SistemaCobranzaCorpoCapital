@@ -1,0 +1,81 @@
+-- Function: public.insertar_cliente(integer, character varying, text, text, text, character varying, character varying, integer, integer, character varying, character varying, date, text, integer, character varying, character varying, integer)
+
+-- DROP FUNCTION public.insertar_cliente(integer, character varying, text, text, text, character varying, character varying, integer, integer, character varying, character varying, date, text, integer, character varying, character varying, integer);
+
+CREATE OR REPLACE FUNCTION public.insertar_cliente(
+    integer,
+    character varying,
+    text,
+    text,
+    text,
+    character varying,
+    character varying,
+    integer,
+    integer,
+    character varying,
+    character varying,
+    date,
+    text,
+    integer,
+    character varying,
+    character varying,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    id integer;
+  v_condicion_cliente integer;
+  v_nombres_cliente character varying;
+  v_ci_cliente text;
+  v_telefono_principal text;
+  v_telefono_alterno text;
+  v_correo character varying;
+  v_direccion character varying;
+  v_idservicio integer;
+  v_costos_instalacion integer;
+  v_observacion_instalacion character varying;
+  v_estatus_contrato character varying;
+  v_fecha_registr date;
+  v_usuario text;
+  v_tipo_cliente integer;
+  v_nombre_comercio character varying;
+  v_otro_correo character varying;
+  v_costoservicio integer;
+   
+Begin
+
+cadena := '';
+separador := '';
+  v_condicion_cliente:=$1;
+  v_nombres_cliente:=$2;
+  v_ci_cliente:=$3;
+  v_telefono_principal:=$4;
+  v_telefono_alterno:=$5;
+  v_correo:=$6;
+  v_direccion:=$7;
+  v_idservicio:=$8;
+  v_costos_instalacion:=$9;
+  v_observacion_instalacion:=$10;
+  v_estatus_contrato:=$11;
+  v_fecha_registr:=$12;
+  v_usuario:=$13;
+  v_tipo_cliente:=$14; 
+  v_nombre_comercio:=$15;
+  v_otro_correo:=$16;
+  v_costoservicio:=$17;
+       
+    insert into clientes (condicion_cliente,nombres_cliente,ci_cliente,telefono_principal,telefono_alterno,correo,direccion,idservicio,costos_instalacion,observacion_instalacion,estatus_contrato,fecha_registr,usuario,tipo_cliente,nombre_comercio,otro_correo,costoservicio) 
+    values (v_condicion_cliente,v_nombres_cliente,v_ci_cliente,v_telefono_principal,v_telefono_alterno,v_correo,v_direccion,v_idservicio,v_costos_instalacion,v_observacion_instalacion,v_estatus_contrato,v_fecha_registr,v_usuario,v_tipo_cliente,v_nombre_comercio,v_otro_correo,v_costoservicio)
+
+RETURNING id_cliente INTO id;
+
+    return id;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_cliente(integer, character varying, text, text, text, character varying, character varying, integer, integer, character varying, character varying, date, text, integer, character varying, character varying, integer)
+  OWNER TO postgres;

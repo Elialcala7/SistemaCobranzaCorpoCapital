@@ -1,0 +1,56 @@
+-- Function: public.consultar_pfpago(integer)
+
+-- DROP FUNCTION public.consultar_pfpago(integer);
+
+CREATE OR REPLACE FUNCTION public.consultar_pfpago(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;  
+    pc_id_pfcobro int;
+   
+Begin
+    cadena := '';   
+    pc_id_pfcobro := $1;
+   
+    for fila in 
+	select 	
+		pfc.id_pfcobro ||'~'||
+		pfc.fecha_cobro ||'~'||
+		pfc.estatus_factura ||'~'||
+		cs.id_cliente ||'~'||
+		cs.condicion_cliente ||'~'||
+		cs.nombres_cliente ||'~'||
+		cs.ci_cliente ||'~'||
+		cs.telefono_principal ||'~'||
+		cs.telefono_alterno ||'~'||
+		cs.correo ||'~'||
+		cs.direccion ||'~'||
+		sc.nombre_servicio ||'~'||
+		sc.contenido_servicio ||'~'||
+		sc.monto_servicio ||'~'||
+		cs.nombre_comercio ||'~'||
+		cs.otro_correo ||'~'||
+		cs.costoservicio as datos
+	from 
+		pfcobro pfc,
+		clientes cs,
+		servicios sc
+		
+	where 
+		pfc.id_pfcobro=pc_id_pfcobro and 
+		pfc.id_cliente=cs.id_cliente and
+		pfc.id_servicio=sc.id_servicio
+	    
+    loop
+        cadena := fila.datos;
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_pfpago(integer)
+  OWNER TO postgres;

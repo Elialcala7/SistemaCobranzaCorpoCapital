@@ -1,0 +1,58 @@
+-- Function: public.consultar_clientestipos_fechas(integer, date, date)
+
+-- DROP FUNCTION public.consultar_clientestipos_fechas(integer, date, date);
+
+CREATE OR REPLACE FUNCTION public.consultar_clientestipos_fechas(
+    integer,
+    date,
+    date)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;  
+    separador text;
+    tt_cliente integer;
+    rang_fecha_inicio date;
+    rang_fecha_fin date;
+   
+Begin
+    cadena := ''; 
+    separador:='';  
+    tt_cliente:=$1;
+    rang_fecha_inicio:= $2;
+    rang_fecha_fin:= $3;
+   
+    for fila in 
+	select 	cli.id_cliente  ||'~'||
+		cli.nombre_comercio ||'~'||
+		cli.nombres_cliente ||'~'||
+		cli.telefono_principal ||'~'||
+		cli.ci_cliente ||'~'||
+		ser.nombre_servicio ||'~'||
+		cli.costoservicio ||'~'||
+		cli.fecha_registr ||'~'||
+		tpc.nombre_tipo as datos
+	from 
+		clientes cli,
+		servicios ser,
+		tipocliente tpc
+	where 
+		cli.fecha_registr between rang_fecha_inicio and  rang_fecha_fin and
+		estatus_contrato='SI' and
+		cli.tipo_cliente = tt_cliente and
+		cli.idservicio = ser.id_servicio and
+		cli.tipo_cliente = tpc.id_tipocliente
+	    
+    loop
+        cadena := cadena||separador||fila.datos;
+        separador:='|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_clientestipos_fechas(integer, date, date)
+  OWNER TO postgres;

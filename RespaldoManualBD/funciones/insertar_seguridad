@@ -1,0 +1,43 @@
+-- Function: public.insertar_seguridad(date, integer, text, character varying, integer)
+
+-- DROP FUNCTION public.insertar_seguridad(date, integer, text, character varying, integer);
+
+CREATE OR REPLACE FUNCTION public.insertar_seguridad(
+    date,
+    integer,
+    text,
+    character varying,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    p_fecha_registro date;
+    p_usuario integer;
+    p_ip text;
+    p_movimiento character varying;
+    p_idregostro_movimiento integer;
+   
+Begin
+
+cadena := '';
+separador := '';
+
+p_fecha_registro:=$1;
+p_usuario:=$2;
+p_ip:=$3;
+p_movimiento:=$4;
+p_idregostro_movimiento :=$5;
+
+   	insert into seguridad (fecha_registro,usuario,ip,desc_movimiento ,idregostro_movimiento) 
+   	values (p_fecha_registro,p_usuario,p_ip,p_movimiento,p_idregostro_movimiento);
+
+    return 1;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.insertar_seguridad(date, integer, text, character varying, integer)
+  OWNER TO postgres;

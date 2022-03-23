@@ -1,0 +1,34 @@
+-- Function: public.consultar_formapagos()
+
+-- DROP FUNCTION public.consultar_formapagos();
+
+CREATE OR REPLACE FUNCTION public.consultar_formapagos()
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+Begin
+    cadena := '';
+    separador:='';
+   
+    for fila in 
+	select id_formapago || '~' ||  
+	       nombre_pago datos
+	       
+	from   forma_pago
+	
+    loop
+        cadena := cadena||separador||fila.datos;
+        separador:='|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_formapagos()
+  OWNER TO postgres;

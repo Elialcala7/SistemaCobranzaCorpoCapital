@@ -1,0 +1,51 @@
+-- Function: public.editar_usuario(integer, character varying, character varying, character varying, character varying, integer)
+
+-- DROP FUNCTION public.editar_usuario(integer, character varying, character varying, character varying, character varying, integer);
+
+CREATE OR REPLACE FUNCTION public.editar_usuario(
+    integer,
+    character varying,
+    character varying,
+    character varying,
+    character varying,
+    integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+p_id_usuario integer;
+p_correo character varying;
+p_nombre character varying;
+p_apellido character varying;
+p_clave character varying;
+p_rol integer;
+   
+Begin
+
+cadena := '';
+separador := '';
+
+p_id_usuario:=$1;
+p_correo:=$2;
+p_nombre:=$3;
+p_apellido:=$4;
+p_clave:=$5;
+p_rol:=$6;
+      	update usuarios set correo_usuario = p_correo,
+			      nombre = p_nombre,
+			      apellido = p_apellido,
+			      clave = p_clave,
+			      id_nivel = p_rol
+			              
+	where id_usuario = p_id_usuario;
+	
+    return p_id_usuario;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.editar_usuario(integer, character varying, character varying, character varying, character varying, integer)
+  OWNER TO postgres;

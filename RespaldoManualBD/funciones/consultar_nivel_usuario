@@ -1,0 +1,29 @@
+-- Function: public.consultar_nivel_usuario()
+
+-- DROP FUNCTION public.consultar_nivel_usuario();
+
+CREATE OR REPLACE FUNCTION public.consultar_nivel_usuario()
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+
+Begin
+    cadena := '';
+    separador:='';
+    for fila in 
+	select id_nivel||'~'||descripcion_nivel as datosNiveles from niveles order by descripcion_nivel
+    loop
+        cadena := cadena ||separador||fila.datosNiveles;
+        separador := '|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_nivel_usuario()
+  OWNER TO postgres;

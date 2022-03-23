@@ -1,0 +1,19 @@
+-- Table: public.servicios
+
+-- DROP TABLE public.servicios;
+
+CREATE TABLE public.servicios
+(
+  id_servicio integer NOT NULL DEFAULT nextval('servicios_id_servicio_seq'::regclass),
+  nombre_servicio text,
+  contenido_servicio text,
+  monto_servicio integer DEFAULT 0,
+  status_servicio integer DEFAULT 1,
+  id_plan integer,
+  CONSTRAINT servicios_pkey PRIMARY KEY (id_servicio)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.servicios
+  OWNER TO postgres;

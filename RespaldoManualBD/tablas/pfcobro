@@ -1,0 +1,19 @@
+-- Table: public.pfcobro
+
+-- DROP TABLE public.pfcobro;
+
+CREATE TABLE public.pfcobro
+(
+  id_pfcobro integer NOT NULL DEFAULT nextval('pfcobro_id_pfcobro_seq'::regclass),
+  id_cliente integer,
+  id_servicio integer,
+  costo_servicio integer,
+  fecha_cobro date,
+  estatus_factura text DEFAULT 'PENDIENTE'::text,
+  CONSTRAINT pfcobro_pkey PRIMARY KEY (id_pfcobro)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.pfcobro
+  OWNER TO postgres;

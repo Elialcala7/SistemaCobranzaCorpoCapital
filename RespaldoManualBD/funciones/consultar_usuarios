@@ -1,0 +1,32 @@
+-- Function: public.consultar_usuarios(text, character varying)
+
+-- DROP FUNCTION public.consultar_usuarios(text, character varying);
+
+CREATE OR REPLACE FUNCTION public.consultar_usuarios(
+    text,
+    character varying)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    cedulaU text;
+    claveU character varying;
+Begin
+    cadena := '';
+    cedulaU := $1;
+    claveU := $2;
+    for fila in 
+	select cedula ||'~'|| id_nivel ||'~'|| id_usuario ||'~'|| eliminar_usuario ||'~'|| nombre ||'~'|| apellido ||'~'|| correo_usuario as datosPersonales 
+	from usuarios where cedula=cedulaU and clave=claveU
+    loop
+        cadena := fila.datosPersonales;
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultar_usuarios(text, character varying)
+  OWNER TO postgres;

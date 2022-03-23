@@ -1,0 +1,32 @@
+-- Function: public.eliminar_servicio(integer)
+
+-- DROP FUNCTION public.eliminar_servicio(integer);
+
+CREATE OR REPLACE FUNCTION public.eliminar_servicio(integer)
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+    p_id_servicio integer;
+        
+    
+Begin
+    cadena := '';
+    separador := '';
+    p_id_servicio:=$1;
+            
+   	update servicios set            
+			                id_servicio = p_id_servicio,
+					status_servicio = 0
+
+					where id_servicio = p_id_servicio;
+    return p_id_servicio;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.eliminar_servicio(integer)
+  OWNER TO postgres;

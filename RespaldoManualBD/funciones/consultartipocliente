@@ -1,0 +1,36 @@
+-- Function: public.consultartipocliente()
+
+-- DROP FUNCTION public.consultartipocliente();
+
+CREATE OR REPLACE FUNCTION public.consultartipocliente()
+  RETURNS text AS
+$BODY$
+DECLARE
+    fila RECORD;
+    cadena text;
+    separador text;
+    
+Begin
+    cadena := '';
+    separador:='';
+   
+    for fila in 
+	select id_tipocliente || '~' ||  
+	       nombre_tipo 
+	        as datosclientes
+	       
+	from   tipocliente
+	
+		
+    loop
+        cadena := cadena||separador||fila.datosclientes;
+        separador:='|';
+    end loop;
+
+    return cadena;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.consultartipocliente()
+  OWNER TO postgres;
