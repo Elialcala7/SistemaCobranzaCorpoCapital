@@ -1,0 +1,14 @@
+.justificarCaja 
+{
+    position: relative;
+    align-content: left;
+ 	left: 800px;
+   
+}
+.centrarCaja
+{
+	position: absolute;
+    align-content: center;
+    left: 520px;
+  
+}
